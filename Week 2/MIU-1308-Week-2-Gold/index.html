@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<!--
+Travis Pochintesta
+MIU 1308
+Week 2
+index.html
+-->
+
+<html>
+  <!-- Document Head -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Mobile Interfaces & Usability Week 1 Assignment - Travis Pochintesta" />
+    <meta name="keywords" content="html5, Mobile Development, Full Sail University" />
+    <meta name="robots" content="index, follow" />
+    <meta name="viewport" content="user-scalable=no, width=device-width" />
+    <!-- Document Title -->
+      <title>
+        KiT
+      </title>
+      
+      <!-- My family likes raccoons.  A "Kit" is a baby racoon.  This is to be a raccoon themed contact list for my daughter. -->
+      <!-- Import CSS Styles-->
+      <link href="css/style.css" type="text/css" rel="stylesheet"/>
+  </head>
+  <!-- Document Body -->
+  <body>
+    <header>
+      <hgroup>
+        <h1 id="maintitle">
+          KiT - 
+          <span id="catchphrase">
+            Keep in touch
+          </span>
+        </h1>
+      </hgroup>
+    </header>
+    <!-- Image Logo -->
+      <div>
+        <a href= "additem.html">
+          <img src="img/KiT2.png" style="float:left" type="img/png" height="120" id="logo" title="raccoonlogo"/>
+        </a>
+      </div>
+      <p>
+          Organize your wildlife!    
+      </p>
+      
+      <!-- Navigation -->
+      <nav>
+        <a href="additem.html">
+          Add Contact
+        </a>
+        <!-- Search -->
+        <p>
+          <input type="text" id="searchbox"/>
+          <button type="button">
+            Search
+          </button>
+        </p>
+        <!-- Browse -->
+		
+          <div>
+            
+			<h4 id="browse">
+              Browse
+          </h4>
+          <h4 id="categories">
+            	Categories
+          </h4>
+          </div>
+          
+          <div>
+            
+			<ul>
+              <li>
+                <a href="noitemsfound.html" id="displayFriends">
+                  Friends
+                </a>
+              </li>
+              <li>
+                <a href="noitemsfound.html" id="displayFamily">
+                  Family
+                </a>
+              </li>
+              <li>
+                <a href="noitemsfound.html" id="displaySchool">
+                  School
+                </a>
+              </li>
+              <li>
+                <a href="noitemsfound.html" id="displayWork">
+                  Work
+                </a>
+              </li>
+              <li>
+                <a href="noitemsfound.html" id="displayAcquaintances">
+                  Acquaintances
+                </a>
+              </li>
+          </ul>
+          </div>
+          
+      </nav>
+  </body>
+  	<script src="js/json.js" type="text/javascript"></script>	
+	<script src="js/main.js" type="text/javascript"></script>
+</html>
