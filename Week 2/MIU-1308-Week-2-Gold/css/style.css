@@ -1,7 +1,7 @@
 /*
 Travis Pochintesta
 MIU 1308
-Week 2
+Week 2 Bronze
 style.css
 */
 
@@ -76,10 +76,10 @@ input:focus{
 	border-color:blue;
 }
 
-a{
+/* a{
 	padding:1px;
 	outline:1px dotted blue;
-}
+} */
 
 a:hover{
 	color:white; outline: none;

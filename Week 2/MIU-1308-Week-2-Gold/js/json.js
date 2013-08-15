@@ -1,6 +1,6 @@
 // Travis Pochintesta
 // MIU 1308
-// Week 2
+// Week 2 Bronze
 // json.js
 
 var json = {
