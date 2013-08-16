@@ -194,7 +194,7 @@ window.addEventListener("DOMContentLoaded", function() {
 	
 	function editItem(){
 		var value = localStorage.getItem(this.key);
-		var item = JSON.parse(value);
+		var contact = JSON.parse(value);
 		toggleDisplay("off");
 		$("fname").value = contact.fname[1];
 		$("lname").value = contact.lname[1];
@@ -209,22 +209,16 @@ window.addEventListener("DOMContentLoaded", function() {
 			radios[i].setAttribute("checked", "checked");
 			}
 		}
-		$("titles").value = contact.title;
-		if(contact.friend[1] == "Friend"){
-			$(friendCheck).setAttribute("checked", "checked");
+		
+		for(i=0; i<contact.relationship[1].length; i++){
+			for(i=0; i<theCheckboxes.length; i++){
+				if(theCheckboxes[i].checked){
+					relationshipType = theCheckboxes[i].value;
+					theCheckboxes.setAttribute("checked")
+				}
+			}		
 		}
-		if(contact.family[1] == "Family"){
-			$(familyCheck).setAttribute("checked", "checked");
-		}
-		if(contact.school[1] == "School"){
-			$(schoolCheck).setAttribute("checked", "checked");
-		}
-		if(contact.work[1] == "Work"){
-			$(workCheck).setAttribute("checked", "checked");
-		}
-		if(contact.acquaintance[1] == "Acquaintance"){
-			$(acquaintanceCheck).setAttribute("checked", "checked");
-		}
+		
 		$("birthday").value = contact.birthday[i];
 		$("bestyrating").value = contact.bestyrating[i];
 		$("notes").value = contact.notes[i];
@@ -261,7 +255,7 @@ window.addEventListener("DOMContentLoaded", function() {
 		
 		if(getFname.value === ""){
 			var fnameError = "Please enter a first name.";
-			getfname.style.border = "1px solid red";
+			getFname.style.border = "1px solid red";
 			errorAry.push(fnameError);			
 		}
 		if(getPhone.value === ""){
@@ -275,7 +269,7 @@ window.addEventListener("DOMContentLoaded", function() {
 			getEmail.style.border = "1px solid red";
 			errorAry.push(emailError);
 		}
-		if(errorAry.length <= 1){
+		if(errorAry.length !=0){
 			for(var i=0, j=errorAry.length; i<j; i++){
 				var text = document.createElement("li");
 				text.innerHTML = errorAry[i];
