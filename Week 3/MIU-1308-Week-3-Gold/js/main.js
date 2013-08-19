@@ -1,0 +1,306 @@
+// Travis Pochintesta
+// MIU 1308
+// Week 3 Gold
+// main.js
+
+/* Wait for DOM */
+window.addEventListener("DOMContentLoaded", function() {
+
+/* Create Variables */
+
+	var genderType = "Unknown";
+	var radios = [$("male"), $("female")]
+	
+	var titleList = ["--Choose A Title--", "Mr.", "Ms.", "Mrs.", "Dr.", "Sir"];
+	
+	var relationshipType = "no";
+	var relationshipArray = [];
+	
+	var storeContact = $("submit");
+	var displayContact = $("displayContact");
+	var clearContacts = $("clearContacts");
+	
+	var errorMsg = $("errors");
+
+/* Declare Functions */
+
+	// Get Element from HTML
+	function $(x){
+		var selectElement = document.getElementById(x);
+		return selectElement;
+	}
+	
+	// Get Radio Value
+	function whichRadio(){
+		var radioButtons = document.forms[0].gender;
+		for(i=0; i<radios.length; i++){
+			if(radios[i].checked){
+				genderType = radios[i].value;
+			}
+		}
+	}
+	
+	// Get Checkbox Value
+	function relationship(){
+		var theCheckboxes = document.getElementById("critterForm").category;
+			relationshipArray = [];
+		for(i=0; i<theCheckboxes.length; i++){
+			if(theCheckboxes[i].checked){
+				relationshipType = theCheckboxes[i].value;
+				relationshipArray.push(relationshipType);
+			}
+		}
+	}	
+		
+	// Toggle Contact Input/Storage Display	
+	function toggleDisplay(t){
+		switch(t){
+			case "on":
+				$("critterForm").style.display = "none";
+				$("clearContacts").style.display = "inline";
+				$("displayContact").style.display = "none";
+				$("addNew").style.display = "inline";
+				break;
+			case "off":
+				$("critterForm").style.display = "block";
+				$("clearContacts").style.display = "inline";
+				$("displayContact").style.display = "inline";
+				$("addNew").style.display = "none";
+				$("items").style.display = "none";
+				break;
+			default:
+				return false;
+		}	
+	} 
+	
+/* Create Titles */
+
+	function makeTitles(){
+		var targetForm = document.getElementsByTagName("form");
+		var selectLi = $("title");
+		var makeTitleList = document.createElement("select");
+			makeTitleList.setAttribute("id", "titles");
+		for(var i=0, j=titleList.length; i<j; i++){
+			var makeTitle = document.createElement("option");
+			var titleText = titleList[i];
+				makeTitle.setAttribute("value", titleText);
+				makeTitle.innerHTML = titleText;
+				makeTitleList.appendChild(makeTitle);
+		}
+		selectLi.appendChild(makeTitleList);
+	}
+	
+	makeTitles();
+	
+/* Collect Values */
+
+	function saveData(keyListen){
+		if(!keyListen){
+			var key					= Math.floor(Math.random()*10000001);
+		}else{
+			key = keyListen;
+		}
+		whichRadio();
+		relationship();
+	
+		var contact					= {};
+			contact.fname			= ["First Name:", $("fname").value];
+			contact.lname			= ["Last Name:", $("lname").value];
+			contact.phone			= ["Phone:", $("phone").value];
+			contact.address			= ["Address:", $("address").value];
+			contact.email			= ["Email:", $("email").value];			
+		 	contact.gender			= ["Gender:", genderType];
+			contact.title			= ["Title:", $("titles").value];
+			contact.relationship	= ["Relationship", relationshipArray];
+			contact.birthday		= ["Birthday:", $("birthday").value];
+			contact.bestyrating		= ["Besty Rating:", $("bestyrating").value];
+			contact.notes			= ["Notes:", $("notes").value];
+		
+		localStorage.setItem(key, JSON.stringify(contact));
+		alert("Critter Captured!");
+	}
+	
+/* Display Contacts */
+
+	function getContact(){
+		toggleDisplay("on");
+		if(localStorage.length === 0){
+			alert("No critters captured yet so defaults added.");
+			autoFillData();
+		}
+		var makeContactList = document.createElement("div");
+		makeContactList.setAttribute("id", "items");
+		var makeContact = document.createElement("ul");
+		makeContactList.appendChild(makeContact);
+		document.body.appendChild(makeContactList);
+		$("items").style.display = "block";
+		for(var i=0, len=localStorage.length; i<len; i++){
+			var addContact = document.createElement("li");
+			var addLinks = document.createElement("li");
+			makeContact.appendChild(addContact);
+			var key = localStorage.key(i);
+			var props = localStorage.getItem(key);
+			var contact = JSON.parse(props);
+			var addProperties = document.createElement("ul");
+			addContact.appendChild(addProperties);
+			getIcon(contact.relationship[1], addProperties);
+			console.log(contact);
+			for(var a in contact){
+				var addSubProp = document.createElement("li");
+				addProperties.appendChild(addSubProp);
+				var optSubText = contact[a][0]+" "+contact[a][1]; // ?
+				addSubProp.innerHTML = optSubText;
+				addProperties.appendChild(addLinks);
+			}
+			makeLinks(localStorage.key(i),addLinks);
+		}
+	}
+	
+	function getIcon(iconCat, addProperties){
+		var iconLi = document.createElement("li");
+		addProperties.appendChild(iconLi);
+		for(i=0; i<iconCat.length; i++){
+			var newIcon = document.createElement("img");
+			var iconSrc = newIcon.setAttribute("src", "img/" + iconCat[i] + ".png");
+			iconLi.appendChild(newIcon);	
+		} 
+	}
+	
+	
+	function autoFillData(){
+		for(var n in json){
+			var id = Math.floor(Math.random()*10000001);
+			localStorage.setItem(id, JSON.stringify(json[n]));
+		}
+	}
+	
+	function makeLinks(key, addLinks){
+		var editLink = document.createElement("a");
+		editLink.href = "#";
+		editLink.key = key;
+		var editLinkText = "Edit Contact";
+		editLink.addEventListener("click", editItem);
+		editLink.innerHTML = editLinkText;
+		addLinks.appendChild(editLink);
+		
+		var deleteLink = document.createElement("a");
+		deleteLink.href = "#";
+		deleteLink.key = key;
+		var deleteLinkText = "Delete Contact";
+		deleteLink.addEventListener("click", deleteItem);
+		deleteLink.innerHTML = deleteLinkText;
+		addLinks.appendChild(deleteLink);
+	}
+	
+	function editItem(){
+		var value = localStorage.getItem(this.key);
+		var contact = JSON.parse(value);
+		toggleDisplay("off");
+		$("fname").value = contact.fname[1];
+		$("lname").value = contact.lname[1];
+		$("phone").value = contact.phone[1];
+		$("address").value = contact.address[1];
+		$("email").value = contact.email[1];
+		var radios = document.forms[0].gender;
+		for(var i=0; i<radios.length; i++){
+			if(radios[i].value == "Male" && contact.gender[1] == "Male"){
+				radios[i].setAttribute("checked", "checked");
+		}else if(radios[i].value == "Female" && contact.gender[1] == "Female"){
+			radios[i].setAttribute("checked", "checked");
+			}
+		}
+		
+		for(i=0; i<contact.relationship[1].length; i++){
+			for(i=0; i<theCheckboxes.length; i++){
+				if(theCheckboxes[i].checked){
+					relationshipType = theCheckboxes[i].value;
+					theCheckboxes.setAttribute("checked")
+				}
+			}		
+		}
+		
+		$("birthday").value = contact.birthday[i];
+		$("bestyrating").value = contact.bestyrating[i];
+		$("notes").value = contact.notes[i];
+		
+		save.removeEventListener("click", storeData);
+		$("submit").value = "Edit Contact";
+		var editSubmit = $("submit");
+		editSubmit.eventListener("click", validate);
+		editSubmit.key = this.key;
+	}
+	
+	function deleteItem(){
+		var ask = confirm("Delete Contact?");
+		if(ask){
+			localStorage.removeItem(this.key);
+			alert("Contact Deleted.");
+			window.location.reload();
+		}else{
+			alert("Contact not deleted.");
+		}
+	}
+	
+	function validate(e){ //  I would comment out this section before submitting but the I'd have change some other functions and arguments.
+		var getFname = $("fname");
+		var getPhone = $("phone");
+		var getEmail = $("email");
+	
+		errorMsg.innerHTML = ""; //  Keep getting bug that cascades line by line from this point on. "SyntaxError: At least one digit must occur after a decimal point".
+		getFname.style.border = "1px solid black";
+		getPhone.style.border = "1px solid black";
+		getEmail.style.border = "1px solid black";
+		
+		var errorAry = [];
+		
+		if(getFname.value === ""){
+			var fnameError = "Please enter a first name.";
+			getFname.style.border = "1px solid red";
+			errorAry.push(fnameError);			
+		}
+		if(getPhone.value === ""){
+			var phoneError = "Please enter a phone number.";
+			getPhone.style.border = "1px solid red";
+			errorAry.push(phoneError);
+		}		
+		var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+		if(!(re.exec(getEmail.value))){
+			var emailError = "Please enter a valid email address.";
+			getEmail.style.border = "1px solid red";
+			errorAry.push(emailError);
+		}
+		if(errorAry.length !=0){
+			for(var i=0, j=errorAry.length; i<j; i++){
+				var text = document.createElement("li");
+				text.innerHTML = errorAry[i];
+				errorMsg.appendChild(text);
+			}		
+		e.preventDefault();
+			return false;	
+		}else{
+			/*storeContact*/saveData(this.key);
+		}
+	}
+	
+/* Clear Local Storage */
+
+	function clearStorage(){
+		if(localStorage.length === 0){
+		alert("Nothing to clear.")
+	}else{
+		localStorage.clear();
+		alert("Critters Released!");
+		window.location.reload();
+		return false; // ?
+		}
+	}
+	
+/* Main Code */	
+	
+	storeContact.addEventListener("click", validate/*saveData*/);
+	
+	displayContact.addEventListener("click", getContact);
+	
+	clearContacts.addEventListener("click", clearStorage);
+		
+});
