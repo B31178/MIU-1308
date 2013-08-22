@@ -4,7 +4,7 @@ MIU 1308
 Week 3 Gold
 style.css
 */
-
+/*
 body{
 	width:571px;
 	margin:auto;
@@ -76,11 +76,15 @@ input:focus{
 	border-color:blue;
 }
 
-/* a{
+a{
 	padding:1px;
 	outline:1px dotted blue;
-} */
+} 
 
 a:hover{
 	color:white; outline: none;
 }
+*/
+
+label.error{display:block; margin:10px 0; color:#cc0000;}
+
